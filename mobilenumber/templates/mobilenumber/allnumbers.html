@@ -1,0 +1,55 @@
+{% extends 'mobilenumber/basic.html' %}
+{% block css%}
+<style>
+    .good {
+        color: #12b435;
+        margin-left: 113px;
+    }
+
+    .neutral {
+        margin-left: 105px;
+        color: #f49f0a;
+    }
+
+    .danger {
+        color: #c50e29;
+        margin-left: 105px;
+    }
+    body{
+        background: radial-gradient(#0f2440, transparent);
+    }
+    .Index_of_numbers{
+        margin-top: 17px;
+    color: #f49f0a;
+    margin-left: 20px;
+    border-right: 1px solid;
+    height: 61px;
+    padding-right: 10px;
+    }
+</style>
+{% endblock%}
+{% block body %}
+<div style="margin-top: -18px; height: 100%;">
+    <div class="container " style="max-width: 945px; padding: 13px;">
+        {% for number in allnumbers %}
+        
+        
+        <div class="d-flex" style="width: 51%;border: 2px solid yellowgreen;margin-top: 18px;background: rgb(15 36 64);margin-left: 181px; border-radius: 20px">
+            <!-- <div><h3 class="Index_of_numbers" style="color: #f49f0a;">{{ forloop.counter }} </h3></div> -->
+            <div>
+                <h1 style="margin-right: 40px;margin-left: 5px;"><span style="color: #ffd54f; margin-left: 11px; font-size: 22px;">Number:</span><a href="/search/?number={{number.phone_number}}"><span style="font-size: 18px;color: aliceblue;margin-left: 12px;">{{number.phone_number}}</span></a>
+                    <h3 class="{{number.status|lower}}" style="margin-left: 16px; font-size: 19px;">
+                       <span style="color: #f49f0a; font-size: 22px;">Status:</span> {{number.status|lower}}</h3>
+
+            </div>
+            
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,869 @@
+{% extends 'mobilenumber/basic.html' %}
+{% load reviews %}
+{% load mostdangerous %}
+{% load No_of_comments %}
+{% block css%}
+<style>
+    .main {
+        background: radial-gradient(#2e3f5c, #739ac7);
+        margin-top: -25px;
+        margin-bottom: 10px;
+    }
+
+    .cont {
+        margin-top: 49px;
+        padding: 19px;
+        margin-left: 125px;
+    }
+
+    .number_status {
+        font-size: 1.5em;
+        text-transform: uppercase;
+        border: 1px solid #cecece;
+        display: inline-block;
+        margin: 15px auto;
+        padding: 7px 20px;
+        border-radius: 5px;
+        color: #f5f5f5;
+        background: #220c70;
+    }
+
+    .pie-wrapper {
+        margin-left: -280px;
+        width: 350px;
+        height: 175px;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        z-index: 110;
+        margin-top: 12px;
+    }
+
+    .chart-section {
+        position: relative;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        margin-top: 20px;
+
+    }
+
+    .chart {
+        margin-left: -278px;
+        padding: 0;
+        /* margin: -2px; */
+        list-style-type: none;
+        position: relative;
+        width: 350px;
+        height: 175px;
+        overflow: hidden;
+    }
+
+    .indicator_info_s {
+        position: absolute;
+        bottom: 2px;
+        left: 12px;
+        z-index: 9;
+        font-size: .4em;
+        text-transform: uppercase;
+        opacity: .7;
+    }
+
+    .indicator_info_d {
+        position: absolute;
+        bottom: 2px;
+        right: 6px;
+        z-index: 9;
+        font-size: .3em;
+        text-transform: uppercase;
+        opacity: .7;
+    }
+
+    .chart li:nth-child(1) {
+        z-index: 5;
+        border-color: #00b686;
+        -webkit-transform: rotate(36deg);
+        -ms-transform: rotate(36deg);
+        transform: rotate(36deg);
+    }
+
+    .chart::before {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+    }
+
+    .chart li {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: inherit;
+        height: inherit;
+        border: 45px solid;
+        border-top: none;
+        border-bottom-left-radius: 175px;
+        border-bottom-right-radius: 175px;
+        -webkit-transform-origin: 50% 0;
+        -ms-transform-origin: 50% 0;
+        transform-origin: 50% 0;
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+        -webkit-animation-duration: .4s;
+        animation-duration: .4s;
+        -webkit-animation-timing-function: linear;
+        animation-timing-function: linear;
+    }
+
+    .chart li:nth-child(2) {
+        z-index: 4;
+        border-color: #ff0;
+        -webkit-transform: rotate(72deg);
+        -ms-transform: rotate(72deg);
+        transform: rotate(72deg);
+    }
+
+    .chart li:nth-child(3) {
+        z-index: 3;
+        border-color: #ffd740;
+        -webkit-transform: rotate(108deg);
+        -ms-transform: rotate(108deg);
+        transform: rotate(108deg);
+    }
+
+    .chart li:nth-child(4) {
+        z-index: 2;
+        border-color: #ffab40;
+        -webkit-transform: rotate(144deg);
+        -ms-transform: rotate(144deg);
+        transform: rotate(144deg);
+    }
+
+    .chart li:nth-child(5) {
+        z-index: 1;
+        border-color: #c50e29;
+        -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+
+    .score {
+        margin-left: 152px;
+        top: 73px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        font-size: 2em;
+        font-weight: 700;
+    }
+
+    .score_text {
+        margin-left: 145px;
+        bottom: 0;
+        position: absolute;
+        left: 0;
+        right: -4px;
+        font-size: .8em;
+        font-weight: 700;
+        color: rgba(0, 0, 0, 0.15);
+        word-spacing: 10px;
+    }
+
+    .a {
+        border: 5px solid transparent;
+        border-top: none;
+        border-radius: 0 0 300px 300px;
+        top: 100%;
+        z-index: 2;
+        position: relative;
+    }
+
+    .a100 {
+        -webkit-transform: rotate(178deg);
+        -ms-transform: rotate(178deg);
+        transform: rotate(178deg);
+        border-color: #000;
+    }
+
+    .see_comments {
+        text-decoration: underline;
+        cursor: pointer;
+        margin-left: 93px;
+        color: #f1f1f1;
+        ;
+    }
+
+    .see_comments:hover {
+        color: rgb(241, 132, 7);
+    }
+
+    .right-box {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        margin-left: 93px;
+        margin-top: 42px;
+    }
+
+    .span6 {
+        -ms-flex-preferred-size: 50%;
+        -webkit-box-flex: 0 0 50%;
+        -webkit-flex: 0 0 50%;
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .right-box__location {
+        margin-bottom: 10px;
+        margin-top: 20px;
+    }
+
+    .lc__title {
+        font-weight: 700;
+        display: block;
+    }
+
+    table {
+        display: table;
+        border-collapse: separate;
+        box-sizing: border-box;
+        text-indent: initial;
+        border-spacing: 2px;
+        border-color: grey;
+    }
+
+    tbody {
+        display: table-row-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+
+    .comment_item.neutral_comment {
+        border-top: 1px solid #ffab40;
+    }
+
+    .comment_item {
+        background: #f7f7db;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        margin-bottom: 20px;
+        border-top-right-radius: 25px;
+    }
+
+    .comment_text {
+        border: 1px solid #ffab40;
+        background: rgba(244, 159, 7, .02);
+        border-radius: 25px;
+        border-top: none;
+    }
+
+    .comment_text {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        padding: 25px 20px 10px;
+        margin-left: 10px;
+        position: relative;
+        font-size: .85em;
+    }
+
+    .comment_item {
+        border-bottom-right-radius: 10px;
+        background: #f7f7db;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        margin-bottom: 20px;
+        border-top-right-radius: 25px;
+        border-top-left-radius: 34px;
+        border-bottom-left-radius: 20px;
+        width: 70%;
+    }
+
+    .comment_status {
+        font-weight: 700;
+        position: absolute;
+        top: 4px;
+        right: 20px;
+        padding: 2px 4px;
+        border-radius: 5px;
+        text-transform: uppercase;
+    }
+
+    .comment_category {
+        font-weight: 700;
+        color: #777;
+        word-spacing: 5px;
+        color: #f49f0a;
+    }
+
+    .comments_number.add_rating {
+        color: #000;
+        text-decoration: underline;
+    }
+
+    .form-group {
+        border: 2px solid;
+        margin-left: 28px;
+        width: 100%;
+
+    }
+
+    .good {
+        color: #12b435;
+        margin-left: 113px;
+    }
+
+    .neutral {
+        margin-left: 105px;
+        color: #f49f0a;
+    }
+
+    .danger {
+        color: #c50e29;
+        margin-left: 105px;
+    }
+
+    #score0 {
+        -webkit-transform: rotate(2deg);
+        -ms-transform: rotate(2deg);
+        transform: rotate(2deg);
+        border-color: #000;
+    }
+
+    #score1 {
+        -webkit-transform: rotate(18deg);
+        -ms-transform: rotate(18deg);
+        transform: rotate(18deg);
+        border-color: #000;
+    }
+
+    #score2 {
+        -webkit-transform: rotate(36deg);
+        -ms-transform: rotate(36deg);
+        transform: rotate(36deg);
+        border-color: #000;
+    }
+
+    #score3 {
+        -webkit-transform: rotate(54deg);
+        -ms-transform: rotate(54deg);
+        transform: rotate(54deg);
+        border-color: #000;
+    }
+
+    #score4 {
+        -webkit-transform: rotate(72deg);
+        -ms-transform: rotate(72deg);
+        transform: rotate(72deg);
+        border-color: #000;
+    }
+
+    #score5 {
+        -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+        border-color: #000;
+    }
+
+    #score6 {
+        -webkit-transform: rotate(108deg);
+        -ms-transform: rotate(108deg);
+        transform: rotate(108deg);
+        border-color: #000;
+    }
+
+    #score7 {
+        -webkit-transform: rotate(126deg);
+        -ms-transform: rotate(126deg);
+        transform: rotate(126deg);
+        border-color: #000;
+    }
+
+    #score8 {
+        -webkit-transform: rotate(144deg);
+        -ms-transform: rotate(144deg);
+        transform: rotate(144deg);
+        border-color: #000;
+    }
+
+    #score9 {
+        -webkit-transform: rotate(162deg);
+        -ms-transform: rotate(162deg);
+        transform: rotate(162deg);
+        border-color: #000;
+    }
+
+    #score10 {
+        -webkit-transform: rotate(178.2deg);
+        -ms-transform: rotate(178.2deg);
+        transform: rotate(178.2deg);
+        border-color: #000;
+    }
+
+    #good {
+        -webkit-transform: rotate(2deg);
+        -ms-transform: rotate(2deg);
+        transform: rotate(2deg);
+        border-color: #000;
+    }
+
+    #neutral {
+        -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+        border-color: #000;
+    }
+
+    #danger {
+        -webkit-transform: rotate(178deg);
+        -ms-transform: rotate(178deg);
+        transform: rotate(178deg);
+        border-color: #000;
+    }
+
+    .tip {
+        width: 0px;
+        height: 0px;
+        position: absolute;
+        background: transparent;
+        border: 10px solid #ccc;
+    }
+
+    .tip-up {
+        top: -25px;
+        /* Same as body margin top + border */
+        left: 10px;
+        border-right-color: transparent;
+        border-left-color: transparent;
+        border-top-color: transparent;
+    }
+
+    .dialogbox .body {
+        position: relative;
+        max-width: 500px;
+        height: auto;
+        margin: 20px 10px;
+        padding: 5px;
+        background-color: #DADADA;
+        border-radius: 3px;
+        border: 5px solid #ccc;
+    }
+
+    .body .message {
+        min-height: 30px;
+        border-radius: 3px;
+        font-family: Arial;
+        font-size: 14px;
+        line-height: 1.5;
+        color: #797979;
+    }
+
+    .number_identity {
+        padding: 6px;
+        border: 2px solid;
+        font-size: 34px;
+        margin-left: 13px;
+        color: #efbd1c;
+        background: #0f2440;
+        padding-left: 11px;
+        width: 257px;
+    }
+
+    .location {
+        font-size: large;
+        font-weight: 500;
+        margin-left: 0px;
+        text-align: center;
+        color: aliceblue;
+    }
+
+    .left-box__inner .line-chart-container {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+
+    .left-box__inner .line-chart-container .block {
+        margin: 25px 0 0 0;
+        background: #0d84e2;
+        border-radius: 5px;
+        float: left;
+        width: 450px;
+        border: 1px solid rgba(255, 255, 255, .38);
+        overflow: hidden;
+        margin-top: 40px;
+    }
+
+    .line-chart-container ,
+    .left-box__inner .line-chart-container h1,
+    .left-box__inner .line-chart-container h2,
+    .left-box__inner .line-chart-container p,
+    .left-box__inner .line-chart-container span {
+        color: #fff;
+    }
+
+    .line-chart-container h2 {
+        font-size: 17px;
+    }
+
+    .left-box__inner .line-chart {
+        height: 200px;
+        background: #0d84e2;
+    }
+
+    .grafico {
+        padding: 2rem 1rem 1rem;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        color: #fff;
+        font-size: 80%;
+    }
+
+    .line-chart-container ul {
+        list-style-type: none;
+        margin: 0;
+        padding-left: 0;
+    }
+
+    [class^=eje-] {
+        position: absolute;
+        left: 8px;
+        bottom: 0rem;
+        width: 100%;
+        padding: 1rem 1rem 0 2rem;
+        height: 80%;
+    }
+
+    ul {
+        display: block;
+        list-style-type: disc;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        padding-inline-start: 40px;
+    }
+
+    .eje-y li {
+        height: 25%;
+        border-top: 1px solid rgba(255, 255, 255, .24);
+    }
+
+    [data-ejeY]:before {
+        content: attr(data-ejeY);
+        display: inline-block;
+        width: 2rem;
+        text-align: left;
+        line-height: 0;
+        position: relative;
+        top: -0.5rem;
+        float: left;
+        left: 10px;
+        font-size: .7em;
+    }
+
+    .statistics_container .icons_container>div {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        opacity: .8;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    .right-box .statistics_container .icons_container>div span {
+        display: block;
+    }
+
+    .statistic_item {
+        margin-left: 10px;
+    }
+
+    .statistic_name {
+        color: aliceblue;
+        padding: 6px;
+        font-weight: 600;
+        font-size: larger;
+    }
+
+    .statistic_value {
+        margin-left: 14px;
+        padding: 20px;
+        color: aliceblue;
+    }
+</style>
+{% endblock%}
+{% block body %}
+{% if alluser %}
+<div class="main" style="padding-bottom: 30px;">
+    <div class="row" , style="display: flex;">
+        <div class="col-sm-6">
+            <div class="container my-4 cont">
+                <h3 style="font-size: larger;">PHONE NUMBER: <span class="text-light">{{alluser.phone_number}}</span>
+                </h3>
+                <h2 class=" {{alluser.status|lower}}" style="    font-size: 27px;margin-left: auto;margin-bottom: 84px;"
+                    on="tap:comments.scrollTo(duration=300)" role="button" tabindex="-1"> <span
+                        style="color:rgb(27, 23, 23);font-size: 24px;font-weight: 500;">Status:
+                    </span>{{alluser.status}}</h2>
+                <p class="" style="color: #faae2b; margin-top: -60px; "> Rating according to reviews by people</p>
+                {% if alluser.status == 'DANGER' %}
+                <h5 style="margin-left: 60px;color: #f49f0a;">100% Dangerous</h5>
+                {% elif alluser.status == 'NEUTRAL' %}
+                <h5 style="margin-left: 60px;color: #f49f0a;">50% Dangerous</h5>
+                {% else %}
+                {% if alluser.phone_number|mostdangerous <= 10 %}
+                <h5 style="margin-left: 60px;color: #f49f0a;">{{alluser.phone_number|mostdangerous}}0% Dangerous</h5>
+                {% else %}
+                <h5 style="margin-left: 60px;color: #f49f0a;">100% Dangerous</h5>
+                {% endif %}
+                {% endif %}
+                <div class="chart-section ch">
+
+                    <ul class="chart">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <div class="indicator_info_s">Safe</div>
+                        <div class="indicator_info_d">Danger</div>
+                    </ul>
+                    <div class="pie-wrapper">
+                        <!-- {% if alluser.status == 'DANGER' %}
+                        <div class="a a100  " id="score1"></div>
+                        <span class="score">10%</span>
+                        {% endif %} -->
+                        {% if alluser.status == 'DANGER' %}
+                        <div class="a a100  " id="score10"></div>
+                        <span class="score">100%</span>
+                        {% elif alluser.status == 'NEUTRAL' %}
+                        <div class="a a100  " id="score5"></div>
+                        <span class="score">50%</span>
+                        {% else %}
+
+                        <div class="a a100  " id="score{{alluser.phone_number|mostdangerous}}"></div>
+                        {% if alluser.phone_number|mostdangerous == 0 %}
+                        <span class="score">0%</span>
+                        {% elif alluser.phone_number|mostdangerous == 1 %}
+                        <span class="score">10%</span>
+                        {% elif alluser.phone_number|mostdangerous == 2 %}
+                        <span class="score">20%</span>
+                        {% elif alluser.phone_number|mostdangerous == 3 %}
+                        <span class="score">30%</span>
+                        {% elif alluser.phone_number|mostdangerous == 4 %}
+                        <span class="score">40%</span>
+                        {% elif alluser.phone_number|mostdangerous == 5 %}
+                        <span class="score">50%</span>
+                        {% elif alluser.phone_number|mostdangerous == 6 %}
+                        <span class="score">60%</span>
+                        {% elif alluser.phone_number|mostdangerous == 7 %}
+                        <span class="score">70%</span>
+                        {% elif alluser.phone_number|mostdangerous == 8 %}
+                        <span class="score">80%</span>
+                        {% elif alluser.phone_number|mostdangerous == 9 %}
+                        <span class="score">90%</span>
+                        {% elif alluser.phone_number|mostdangerous == 10 %}
+                        <span class="score">100%</span>
+                        {% else %}
+                        <div class="a a100  " id="score10"></div>
+                        <span class="score">100%</span>
+                        {% endif %}
+                        {% endif %}
+                        
+                        <span class="score_text" style="color: #ffad40;">Scam Score</span>
+                    </div>
+                </div>
+                <a class="see_comments" href="#comments" role="button" tabindex="-1">See comments</a>
+
+
+
+
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="span6 right-box">
+                <div class="right-box__inner">
+                    <h4 class="number_identity no_identity">Caller Location <br class="show_mobile">
+
+                    </h4>
+                    <div class="right-box__location lc location"> Glasgow, United Kingdom </div>
+                    <div class="right-box__map"> <img alt="Map" src="../../static/mobilenumber/images/map1.jpeg"
+                            width="300" height="200"> </div>
+
+                    <div class="icons_container" style="    margin-top: 139px; display: flex;    padding: 29px;">
+                        <div class="statistic_item" style="    "> <a href="#comments"> <span
+                                    class="statistic_name">Calls</span> <img alt="A view of the sea"
+                                    src="../../static/mobilenumber/images/phone_white.svg" width="45" height="45"
+                                    layout="fixed"> <span class="statistic_value">{{alluser.phone_number|No_of_comments}}</span> </a> </div>
+
+                        <!-- <div class="statistic_item" style="margin-left: 60px;    "> <a href="#comments"> <span -->
+                        <!-- class="statistic_name">Searches</span> <img alt="A view of the sea" -->
+                        <!-- src="../../static/mobilenumber/images/search.svg" width="45" height="45" -->
+                        <!-- layout="fixed"> <span class="statistic_value">290</span> </a> </div> -->
+                        <div class="statistic_item" style=" margin-left: 40px;   "> <a href="#comments"> <span
+                                    class="statistic_name">Comments</span> <img alt="A view of the sea"
+                                    src="../../static/mobilenumber/images/chat.svg" width="45" height="45"
+                                    layout="fixed"> <span
+                                    class="statistic_value">{{alluser.phone_number|No_of_comments}}</span> </a> </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</div>
+<div class="container">
+    <h2 class="mt-3" id="comments" style="margin-left: 9px;text-decoration: underline;"> Comments </h2>
+    <div class="report_list my-2">
+        <table style="width: 100%;">
+            <tbody>
+                <div class="dialogbox">
+                    <div class="body">
+                        <span class="tip tip-up"></span>
+                        <div class="message">
+
+                            <a href="#">
+
+                                <h4 style="margin-top: -3px;font-size: 18px;color: black; margin-bottom: 0.2rem;">
+                                    {{alluser.phone_number}}</h4>
+                            </a>
+                            <div class="comment_status  {{alluser.status|lower}}"
+                                style="    padding-top: 0px;margin-right: -16px; "> {{alluser.status}} </div>
+
+                            <span class="{{reviews.review_status}}"
+                                style="margin-left: 10px;color: #2a493f;font-weight: 600;font-size: large;">{{alluser.comment}}</span>
+                            <div class="comment_time" style="margin-top: 0px;"> {{alluser.date_reported}} </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </tbody>
+        </table>
+    </div>
+    
+    
+    <!-- {% if alluser.phone_number|reviews %} -->
+
+    {% for reviews in alluser.phone_number|reviews %}
+    <div class="report_list my-2">
+        <table style="width: 100%;">
+            <tbody>
+                <div class="dialogbox">
+                    <div class="body">
+                        <span class="tip tip-up"></span>
+                        <div class="message">
+
+                            <a href="#">
+
+                                <h4 style="margin-top: -3px;font-size: 18px;color: black; margin-bottom: 0.2rem;">
+                                    {{reviews.reviewnumber.phone_number}}</h4>
+                            </a>
+                            <div class="comment_status  {{reviews.review_status}}"
+                                style="    padding-top: 0px;margin-right: -16px; "> {{reviews.review_status}} </div>
+
+                            <span class="{{reviews.review_status}}"
+                                style="margin-left: 10px;color: #2a493f;font-weight: 600;font-size: large;">{{reviews.review}}</span>
+                            <div class="comment_time" style="margin-top: 0px;"> {{reviews.date_posted}} </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
+    <!-- {% else %}
+    <div class="dialogbox">
+        <div class="body">
+            <span class="tip tip-up"></span>
+            <div class="message">
+
+
+
+                <span class="{{reviews.review_status}}"
+                    style="margin-left: 10px;color: #2a493f;font-weight: 600;font-size: large;">No comments
+                    Yet.......</span>
+
+            </div>
+        </div>
+    </div> -->
+
+    <!-- {% endif %} -->
+</div>
+<div style="padding-top: 6px;    background: #0f2440;   padding-bottom: 65px;">
+    <div class="container">
+        <h2 class="comments_number add_rating" on="tap:add_comment.scrollTo(duration=300)" role="button" tabindex="-1"
+            style="color: #ffd54f;">
+            Help others with your rating
+        </h2>
+        <form style="width: 75%; ">
+            <div style="display: flex;">
+                <div style="margin-top: 30px;">
+                    <div class="radio" style="color: #12b435; font-weight: 700;">
+                        <label><input type="radio" name="reviewstatus" checked value="good"> Good</label>
+                    </div>
+                    <div class="radio" style="color: #f49f0a; font-weight: 700;">
+                        <label><input type="radio" name="reviewstatus" value="neutral"> Neutral</label>
+                    </div>
+                    <div class="radio " style="color: #c50e29; font-weight: 700;">
+                        <label><input type="radio" name="reviewstatus" value="danger"> Danger</label>
+                    </div>
+                    <p style="margin-right: 80px;"></p>
+
+                </div>
+                <input type="text" name="number_review" value="{{alluser.phone_number}}" hidden>
+                <div class="form-group my-2">
+                    <textarea class="form-control" rows="5" id="comment" placeholder="type your review"
+                        name="review_text" required></textarea>
+                </div>
+            </div>
+
+            <button class="btn btn-outline-success my-2 my-sm-0 submit" style="position: absolute;
+                    right: 335px; background-color: #ffd54f;" type="submit">Submit</button>
+        </form>
+
+    </div>
+
+
+</div>
+
+
+
+
+{% endif %}
+
+
+{% endblock %}

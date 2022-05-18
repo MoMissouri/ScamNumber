@@ -1,0 +1,129 @@
+{% extends 'mobilenumber/basic.html' %}
+{% block css%}
+<style>
+#spam_heading {
+    font-size: xx-large;
+    background: #ffd54f;
+    border: 2px solid;
+    width: 48%;
+    margin: auto;
+    padding: 6px;
+    font-weight: 700;
+    color: #0f2440;
+    border-radius: 1pc;
+}
+.spam_background{
+    background: linear-gradient(#2e3f5c, #739ac7);margin-top: -25px;    padding: 20px;
+
+}
+.message_block, .Prediction_block{
+    background: #0f2440;
+    border: 1px solid white;
+}
+.message_heading, .Prediction_heading{
+    border-radius: 10px;
+    background: #ffd54f;
+    border: 2px solid #ffeb00;
+    padding: 4px;
+    font-size: xx-large;
+    font-weight: 600;
+}
+.submit_btn{
+    margin-top: 30px;
+    background: #ffd54f;
+    border-radius: 9px;
+    border: 2px solid;
+}
+.submit_btn:hover{
+    background:#0f2440;
+    border-radius:9px;
+}
+.predict_text{
+    border: 2px solid yellowgreen;
+    font-size: larger;
+    margin-top: 44px;
+    padding: 38px;
+    background: radial-gradient(#174a8f, transparent);
+}
+@media only screen and (max-width: 900) {
+    .auth-container{
+        display: block;
+    }
+    }
+
+
+</style>
+
+{% endblock %}
+
+
+{% block body %}
+
+<div class="spam_background" style=" ">
+    <div class="auth-wrapper container mt-4" >
+        <h4 class="text-center mb-4 spam_heading" id="spam_heading" style="margin-top:70px ;">
+            Spam Message Detector
+        </h4>
+        <div class="auth-content container" style="margin-top: 70px;">
+            <div class="row justify-content-center">
+                <div class="card col-5 mr-4">
+                    <div class="row align-items-center text-center message_block">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                                <h4 class="mb-3 f-w-400 message_heading">
+                                    Message
+                                </h4>
+                                <span class="mb-0 text-muted">
+        
+                                </span>
+                                <!-- dummy spacer -->
+                                <p> <br /> </p>
+                                <form method="post" action="/spam_checker/">
+        
+                                    {% csrf_token %} 
+                                    
+                                    <div class="input-group mb-3" style="margin-top: -14px;">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="feather icon-user"></i></span>
+                                        </div>
+                                        <textarea type="text" class="form-control" style="resize: none;height: 140px;"  name = "input_text" placeholder="Enter Message">{{input_text}}</textarea>
+                                    </div>
+    
+                                    <button type="submit" name="login" class="btn btn-block btn-primary mb-4 submit_btn">Submit</button>
+                                
+                                </form>
+        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if result %}
+                <div class="card col-5 ml-4 Prediction_block">
+                    <div class="row align-items-center text-center">
+                        <div class="col-md-12">
+                            <div class="card-body">
+                               
+                                <h4 class="mb-3 f-w-400 Prediction_heading">
+                                    Prediction
+                                </h4>
+                                
+                                <p class="predict_text" style="color: rgb({{color.0}}, {{color.1}}, {{color.2}});" >{{result}}</p>
+                                <!-- dummy spacer -->
+                                <p> <br /> </p>
+                                
+        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+        </div>
+    </div>
+
+
+</div>
+
+
+{% endblock %}

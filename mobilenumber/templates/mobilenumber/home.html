@@ -1,0 +1,426 @@
+{% extends 'mobilenumber/basic.html' %}
+
+{% load mostdangerous %}
+{% block css%}
+<style>
+    .back {
+        background: linear-gradient(#2e3f5c, #739ac7);
+    }
+
+    .spanCont {
+        position: relative;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-flex: 0 1 auto;
+        -webkit-flex: 0 1 auto;
+        -ms-flex: 0 1 auto;
+        flex: 0 1 auto;
+        -ms-flex-wrap: wrap;
+        -webkit-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+        margin-right: -1rem;
+        margin-left: -1rem;
+        padding-top: 19px;
+        padding-left: 15px;
+    }
+
+    .home_left_box {
+        padding-right: 120px;
+        padding-left: 45px;
+        background: rgb(15 36 64);
+        border-radius: 100;
+        border: 1px solid yellow;
+        border-radius: 23px;
+        margin-top: 28px;
+        padding: 50px;
+        margin-bottom: 60px;
+    }
+
+    .left-box {
+        text-align: center;
+    }
+
+    .span6 {
+        -ms-flex-preferred-size: 50%;
+        -webkit-box-flex: 0 0 50%;
+        -webkit-flex: 0 0 50%;
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .span1,
+    .span10,
+    .span11,
+    .span12,
+    .span2,
+    .span3,
+    .span4,
+    .span5,
+    .span6,
+    .span7,
+    .span8,
+    .span9 {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-box-flex: 0 0 auto;
+        -webkit-flex: 0 0 auto;
+        -ms-flex: 0 0 auto;
+        flex: 0 0 auto;
+
+        position: relative;
+    }
+
+    .chart-title {
+        font-size: 26px;
+        color: aliceblue;
+        font-weight: 500;
+        text-align: center;
+        margin-left: 23px;
+    }
+
+    .cc {
+        border-left: 1px solid #fff;
+        width: 100%;
+        margin: 30px auto 0 auto;
+        padding-bottom: 20px;
+        padding-top: 5px;
+    }
+
+
+
+    .cc__element {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        -webkit-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-justify-content: flex-start;
+        -webkit-box-pack: start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .tel-number {
+        -webkit-box-flex: 100%;
+        -webkit-flex: 100%;
+        -ms-flex: 100%;
+        flex: 100%;
+        text-align: left;
+        max-width: 100%;
+        margin-left: 10px;
+    }
+
+    .tel-number a {
+        color: rgb(247, 244, 244);
+        font-weight: 700;
+
+    }
+
+    .bar-container {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        color: black;
+        font-weight: 600;
+    }
+
+    .w_100 {
+        width: 100%;
+    }
+
+    .bar {
+        background: rgb(255 213 79);
+        position: relative;
+        height: 40px;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+
+    }
+
+    .bar span {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+
+    a {
+        text-decoration: none;
+        -webkit-transition: all .4s;
+        -o-transition: all .4s;
+        transition: all .4s;
+        color: #1c58b6;
+        color: #1c58b6;
+    }
+
+    .home_row {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        margin-top: 50px;
+        width: 25%;
+        margin-left: 35%;
+    }
+
+
+
+
+
+    .report_list table {
+        width: 100%;
+    }
+
+    table {
+        display: table;
+        border-collapse: separate;
+        box-sizing: border-box;
+        text-indent: initial;
+        border-spacing: 2px;
+        border-color: grey;
+    }
+
+    tbody {
+        display: table-row-group;
+        vertical-align: middle;
+        border-color: inherit;
+    }
+
+    .comment_item.neutral_comment {
+        border-top: 1px solid #ffab40;
+    }
+
+    .comment_item {
+        background: #f7f7db;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        margin-bottom: 20px;
+        border-top-right-radius: 25px;
+    }
+
+    .comment_text {
+        border: 1px solid #ffab40;
+        background: rgba(244, 159, 7, .02);
+        border-radius: 25px;
+        border-top: none;
+    }
+
+    .comment_text {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        padding: 25px 20px 10px;
+        margin-left: 10px;
+        position: relative;
+        font-size: .85em;
+        border: 2px solid yellow;
+        background: radial-gradient(#fff040, #b59253de);
+        margin-left: -33px;
+    }
+
+    .comment_item {
+        border-bottom-right-radius: 10px;
+        background: #f7f7db;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        margin-bottom: 20px;
+        border-top-right-radius: 25px;
+        border-top-left-radius: 34px;
+        border-bottom-left-radius: 20px;
+        width: 70%;
+    }
+
+    .comment_status {
+        font-weight: 700;
+        color: #ffdc5b;
+        position: absolute;
+        top: 4px;
+        right: 20px;
+        padding: 2px 4px;
+        border-radius: 5px;
+        text-transform: uppercase;
+    }
+
+    .comment_category {
+        font-weight: 700;
+        color: #777;
+        word-spacing: 5px;
+
+        font-size: large;
+        color: black;
+        padding-top: 0px;
+        margin-bottom: 8px;
+    }
+
+
+    .good {
+        color: #05f339;
+    }
+
+    .neutral {
+        color: #ffeb00;
+    }
+
+    .danger, .DANGER {
+        color: #c50e29;
+    }
+
+    .len_bar2 {
+        width: 10%;
+    }
+
+    .len_bar3 {
+        width: 15%;
+    }
+
+    .len_bar4 {
+        width: 20%;
+    }
+
+    .len_bar5 {
+        width: 25%;
+    }
+
+    .len_bar6 {
+        width: 30%;
+    }
+
+    .len_bar7 {
+        width: 35%;
+    }
+
+    .len_bar8 {
+        width: 40%;
+    }
+
+    .len_bar9 {
+        width: 45%;
+    }
+
+    .len_bar10 {
+        width: 50%;
+    }
+    
+    .len_bar11 {
+        width: 55%;
+    }
+    .len_bar12 {
+        width: 60%;
+    }
+    .len_bar13 {
+        width: 60%;
+    }
+    .len_bar14 {
+        width: 75%;
+    }
+    .len_bar15 {
+        width: 80%;
+    }
+    .len_bar16 {
+        width: 85%;
+    }
+</style>
+{% endblock%}
+
+{% block body %}
+<div class="back">
+    <div class="container">
+        <div class="spanCont">
+            <div class="span6 left-box home_left_box" style="    width: 100%;">
+                <div class="left-box__inner">
+                    <amp-carousel height="1" width="1" type="slides" autoplay="1" delay="1000"
+                        on="slideChange:form_2.submit">
+                        <div>
+                            <div>
+
+                            </div>
+                        </div>
+                        <div>
+                            <div></div>
+                        </div>
+                    </amp-carousel> <span class="chart-title fw-bold" style="color: #ffd54f;">Hottest phone numbers</span>
+                    <p class="text-light">Rated according to Reviews</p>
+                    <div class="chart-container cc">
+                        {% for number in allnumbers %}
+
+                        {% if number.phone_number|mostdangerous > 2 %}
+                        <div class="cc__element">
+                            <span class="tel-number text-light"> <a href="/search/?number={{number.phone_number}}">{{number.phone_number}}</a></span>
+                            <div class="bar-container w_100">
+                                {% if number.phone_number|mostdangerous > 16 %}
+                                <div class="bar len_bar16"><span>
+                                        {{number.phone_number|mostdangerous}}</span> </div>
+                                {% else %}        
+                                <div class="bar len_bar{{number.phone_number|mostdangerous}}"><span>
+                                    {{number.phone_number|mostdangerous}}</span> </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+            <div class="span6 right-box">
+                <div class="right-box__inner"> </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+
+</div>
+<div class="container">
+    <div
+        style="    border: 3px solid #ffd54f; margin-top: 40px; padding-left: 40px; width: 70%;border-radius: 30px; background: #0f2440;">
+        <h2 class="mt-3" style="    color: #ffd54f;margin-bottom: 20px;margin-left: 3px;"> Latest Reported Numbers </h2>
+        {% for number in allnumbers %}
+        <div class="report_list my-2">
+            <table style=" width: 94%; margin-bottom: 25px;">
+                <td class="comment_text">
+
+                    <a href="/search/?number={{number.phone_number}}">
+                        <h4 style="color: aliceblue;margin-top: -20px;font-size: initial;">{{number.phone_number}}</h4>
+                    </a>
+                    <div class="comment_status {{ number.status|lower}}">{{ number.status}} </div>
+                    <div class="comment_category">{{number.comment}} </div>
+                    <div class="comment_time" style="margin-top: -4px;margin-top: -4px; color: white;"> {{number.date_reported}} </div>
+                </td>
+            </table>
+        </div>
+        {% endfor %}
+    </div>
+
+    
+
+
+
+
+    {% endblock %}
